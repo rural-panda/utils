@@ -16,6 +16,7 @@ func newSafeList() *safeList {
 		locker: new(sync.RWMutex),
 	}
 }
+
 func (s *safeList) Len() int {
 	s.locker.RLock()
 	defer s.locker.RUnlock()

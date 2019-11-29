@@ -24,6 +24,14 @@ func Test_safeList_PushBack(t *testing.T) {
 			},
 		},
 		{
+			name: "nil",
+			args: args{
+				nil,
+				nil,
+				"nil",
+			},
+		},
+		{
 			name: "slice",
 			args: args{
 				[]int{1, 2, 3},
@@ -44,17 +52,22 @@ func Test_safeList_PushBack(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 
 			f := newSafeList()
-			f.PushBack(tt.args.param1)
-			f.PushBack(tt.args.param2)
+
 			switch tt.args.typ {
 			case "string":
+				f.PushBack(tt.args.param1)
+				f.PushBack(tt.args.param2)
+
 				a := f.RemoveFront().(string)
-				if a != tt.args.param1 {
+				if !reflect.DeepEqual(a, tt.args.param1) {
 					t.Errorf("case %s failed, want: %+v, res: %+v", tt.name, tt.args.param1, a)
 				} else {
 					t.Logf("case %s, want: %+v, res: %+v", tt.name, tt.args.param1, a)
 				}
 			case "slice":
+				f.PushBack(tt.args.param1)
+				f.PushBack(tt.args.param2)
+
 				a := f.RemoveFront().([]int)
 				if !reflect.DeepEqual(a, tt.args.param1) {
 					t.Errorf("case %s failed, want: %+v, res: %+v", tt.name, tt.args.param1, a)
@@ -62,8 +75,18 @@ func Test_safeList_PushBack(t *testing.T) {
 					t.Logf("case %s, want: %+v, res: %+v", tt.name, tt.args.param1, a)
 				}
 			case "map":
+				f.PushBack(tt.args.param1)
+				f.PushBack(tt.args.param2)
+
 				a := f.RemoveFront().(map[string]string)
 				if !reflect.DeepEqual(a, tt.args.param1) {
+					t.Errorf("case %s failed, want: %+v, res: %+v", tt.name, tt.args.param1, a)
+				} else {
+					t.Logf("case %s, want: %+v, res: %+v", tt.name, tt.args.param1, a)
+				}
+			case "nil":
+				a := f.RemoveFront()
+				if !reflect.DeepEqual(a, nil) {
 					t.Errorf("case %s failed, want: %+v, res: %+v", tt.name, tt.args.param1, a)
 				} else {
 					t.Logf("case %s, want: %+v, res: %+v", tt.name, tt.args.param1, a)
